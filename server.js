@@ -44,9 +44,7 @@ const result = await pool.query(
 [req.params.ifsc.toUpperCase()]
 );
 
-```
 res.json(result.rows[0] || {});
-```
 
 } catch (error) {
 res.status(500).json({ error: error.message });
@@ -61,9 +59,7 @@ const result = await pool.query(
 [`%${req.params.bank}%`]
 );
 
-```
 res.json(result.rows);
-```
 
 } catch (error) {
 res.status(500).json({ error: error.message });
@@ -78,9 +74,7 @@ const result = await pool.query(
 [`%${req.params.branch}%`]
 );
 
-```
 res.json(result.rows);
-```
 
 } catch (error) {
 res.status(500).json({ error: error.message });
@@ -95,9 +89,7 @@ const result = await pool.query(
 [`%${req.params.city}%`]
 );
 
-```
 res.json(result.rows);
-```
 
 } catch (error) {
 res.status(500).json({ error: error.message });
@@ -112,9 +104,7 @@ const result = await pool.query(
 [`%${req.params.state}%`]
 );
 
-```
 res.json(result.rows);
-```
 
 } catch (error) {
 res.status(500).json({ error: error.message });
@@ -126,7 +116,6 @@ app.get("/api/search", async (req, res) => {
 try {
 const q = req.query.q;
 
-```
 const result = await pool.query(
   `SELECT * FROM ifsc_database
    WHERE ifsc ILIKE $1
@@ -139,7 +128,6 @@ const result = await pool.query(
 );
 
 res.json(result.rows);
-```
 
 } catch (error) {
 res.status(500).json({ error: error.message });
