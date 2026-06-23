@@ -1,12 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
+const { swaggerUi, swaggerSpec } = require("./swagger");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 const pool = new Pool({
 connectionString: process.env.DATABASE_URL,
 ssl: {
@@ -34,6 +36,10 @@ endpoints: [
 "/api/search?q=keyword",
 ],
 });
+});
+
+app.get("/openapi.json", (req, res) => {
+  res.json(swaggerSpec);
 });
 
 // IFSC Search
