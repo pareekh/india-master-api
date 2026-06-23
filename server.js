@@ -174,6 +174,32 @@ app.get("/api/branches/:bank/:state/:city", async (req, res) => {
   }
 });
 
+// Branch Details
+app.get("/api/details/:bank/:state/:city/:branch", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT *
+       FROM ifsc_database
+       WHERE bank = $1
+       AND state = $2
+       AND city1 = $3
+       AND branch = $4
+       LIMIT 100`,
+      [
+        req.params.bank,
+        req.params.state,
+        req.params.city,
+        req.params.branch
+      ]
+    );
+
+    res.json(result.rows);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Universal Search
 app.get("/api/search", async (req, res) => {
 try {
