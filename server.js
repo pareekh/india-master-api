@@ -111,6 +111,69 @@ res.status(500).json({ error: error.message });
 }
 });
 
+// All Banks
+app.get("/api/banks", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT DISTINCT bank FROM ifsc_database ORDER BY bank"
+    );
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// States by Bank
+app.get("/api/states/:bank", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT DISTINCT state FROM ifsc_database WHERE bank = $1 ORDER BY state",
+      [req.params.bank]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Cities by Bank + State
+app.get("/api/cities/:bank/:state", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT DISTINCT city1
+       FROM ifsc_database
+       WHERE bank = $1 AND state = $2
+       ORDER BY city1`,
+      [req.params.bank, req.params.state]
+    );
+
+    res.json(result.rows);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Branches by Bank + State + City
+app.get("/api/branches/:bank/:state/:city", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT DISTINCT branch
+       FROM ifsc_database
+       WHERE bank = $1
+       AND state = $2
+       AND city1 = $3
+       ORDER BY branch`,
+      [req.params.bank, req.params.state, req.params.city]
+    );
+
+    res.json(result.rows);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Universal Search
 app.get("/api/search", async (req, res) => {
 try {
