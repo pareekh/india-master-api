@@ -1,14 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
-const { swaggerUi, swaggerSpec } = require("./swagger");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 const pool = new Pool({
 connectionString: process.env.DATABASE_URL,
 ssl: {
@@ -268,4 +266,26 @@ const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
 console.log(`Server running on port ${PORT}`);
+});
+app.get("/openapi.json", (req, res) => {
+  res.json({
+    openapi: "3.0.0",
+    info: {
+      title: "IFSC API",
+      version: "1.0.0",
+      description: "Indian Bank IFSC Code Finder API"
+    },
+    servers: [
+      {
+        url: "https://ifsc-api-eb4u.onrender.com"
+      }
+    ],
+    paths: {
+      "/api/ifsc/{ifsc}": {
+        get: {
+          summary: "Get IFSC details"
+        }
+      }
+    }
+  });
 });
