@@ -37,7 +37,26 @@ endpoints: [
 });
 
 app.get("/openapi.json", (req, res) => {
-  res.json(swaggerSpec);
+  res.json({
+    openapi: "3.0.0",
+    info: {
+      title: "IFSC API",
+      version: "1.0.0",
+      description: "Indian Bank IFSC Code Finder API"
+    },
+    servers: [
+      {
+        url: "https://ifsc-api-eb4u.onrender.com"
+      }
+    ],
+    paths: {
+      "/api/ifsc/{ifsc}": {
+        get: {
+          summary: "Get IFSC details"
+        }
+      }
+    }
+  });
 });
 
 // IFSC Search
