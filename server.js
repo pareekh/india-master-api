@@ -42,7 +42,8 @@ app.get("/openapi.json", (req, res) => {
     info: {
       title: "IFSC API",
       version: "1.0.0",
-      description: "Indian Bank IFSC Code Finder API"
+      description:
+        "Indian Bank IFSC Code Finder API - Search banks, branches, cities and IFSC details instantly."
     },
     servers: [
       {
@@ -53,6 +54,26 @@ app.get("/openapi.json", (req, res) => {
       "/api/ifsc/{ifsc}": {
         get: {
           summary: "Get IFSC details"
+        }
+      },
+      "/api/bank/{bank}": {
+        get: {
+          summary: "Search by bank"
+        }
+      },
+      "/api/city/{city}": {
+        get: {
+          summary: "Search by city"
+        }
+      },
+      "/api/state/{state}": {
+        get: {
+          summary: "Search by state"
+        }
+      },
+      "/api/search": {
+        get: {
+          summary: "Universal search"
         }
       }
     }
