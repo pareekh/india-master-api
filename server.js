@@ -286,7 +286,6 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
 console.log(`Server running on port ${PORT}`);
 });
-app.get("/openapi.json", (req, res) => {
   res.json({
     openapi: "3.0.0",
     info: {
