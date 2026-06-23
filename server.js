@@ -200,6 +200,41 @@ app.get("/api/details/:bank/:state/:city/:branch", async (req, res) => {
   }
 });
 
+// API Statistics
+app.get("/api/stats", async (req, res) => {
+  try {
+
+    const totalBranches = await pool.query(
+      "SELECT COUNT(*) FROM ifsc_database"
+    );
+
+    const totalBanks = await pool.query(
+      "SELECT COUNT(DISTINCT bank) FROM ifsc_database"
+    );
+
+    const totalStates = await pool.query(
+      "SELECT COUNT(DISTINCT state) FROM ifsc_database"
+    );
+
+    const totalCities = await pool.query(
+      "SELECT COUNT(DISTINCT city1) FROM ifsc_database"
+    );
+
+    res.json({
+      total_branches: parseInt(totalBranches.rows[0].count),
+      total_banks: parseInt(totalBanks.rows[0].count),
+      total_states: parseInt(totalStates.rows[0].count),
+      total_cities: parseInt(totalCities.rows[0].count),
+      api_status: "online"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
 // Universal Search
 app.get("/api/search", async (req, res) => {
 try {
