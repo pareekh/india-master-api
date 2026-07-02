@@ -45,3 +45,67 @@ status:"online"
 });
 
 });
+// ---------------- HEALTH CHECK ----------------
+
+app.get("/health", async (req, res) => {
+
+    try {
+
+        await pool.query("SELECT NOW()");
+
+        res.json({
+
+            status: "healthy",
+
+            database: "connected",
+
+            timestamp: new Date()
+
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+
+            status: "unhealthy",
+
+            database: "disconnected",
+
+            error: err.message
+
+        });
+
+    }
+
+});
+// ---------------- API INFO ----------------
+
+app.get("/api", (req, res) => {
+
+    res.json({
+
+        name: "India Master API",
+
+        version: "1.0.0",
+
+        endpoints: {
+
+            ifsc: "/api/v1/ifsc/:ifsc",
+
+            pincode: "/api/v1/pincode/:pincode",
+
+            gst_state: "/api/v1/gst-state/:code",
+
+            hsn: "/api/v1/hsn/:code",
+
+            sac: "/api/v1/sac/:code",
+
+            search: "/api/v1/search?q=",
+
+            stats: "/api/v1/stats"
+
+        }
+
+    });
+
+});
